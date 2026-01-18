@@ -1,0 +1,11 @@
+# Environments
+venv/
+env/
+.env
+
+# Databases
+*.db
+
+# Python bytecode
+__pycache__/
+*.pyc
