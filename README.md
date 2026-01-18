@@ -1,111 +1,85 @@
-# HotelIQ-Revenue-Management
+HotelIQ - AI-Powered Revenue Management Platform
+End-to-end revenue management system for hospitality industry with demand forecasting and dynamic pricing optimization.
 
+Project Status: Backend Complete (80%) | Frontend In Progress | Deployment Pending
 
-#  HotelIQ - AI-Powered Revenue Management Platform
+OverviewHotelIQ is a revenue management platform designed for hotels to optimize pricing and forecast demand. The system automates data processing, calculates key performance metrics, and provides AI-driven pricing recommendations.Problem StatementHotels struggle with:
 
-> End-to-end revenue management system for hospitality industry with AI-driven 
-> insights, demand forecasting, and dynamic pricing recommendations.
+Manual pricing decisions without demand insights
+Data scattered across multiple booking channels
+Complex revenue metric calculations
+Inability to predict future occupancy patterns
+SolutionAn automated platform that:
 
-##  Project Overview
+Ingests booking data from multiple sources
+Validates and processes data through ETL pipeline
+Generates 50+ ML features for predictive modeling
+Forecasts occupancy 30 days ahead
+Recommends optimal pricing based on demand
+Key FeaturesData Pipeline
 
-HotelIQ is a comprehensive revenue management platform designed for hotels and 
-hospitality businesses. It combines data engineering, machine learning, and modern 
-web technologies to provide actionable insights for optimizing pricing and occupancy.
+Multi-source ingestion (CSV upload, REST API, database)
+9-layer validation framework (schema, types, business rules, duplicates, outliers)
+Automated data cleaning and standardization
+Batch processing with transaction management (100 records per batch)
+Idempotent operations preventing duplicates
+Feature Engineering
 
-**Status:** 🚧 Active Development (80% Complete)
+50+ features generated from 8 raw columns
+Time features: day_of_week, season, is_weekend, is_peak_season (12 features)
+Stay features: length_of_stay, lead_time_days (4 features)
+Pricing features: price_per_night, discount_pct (3 features)
+Aggregated features: 7-day/30-day rolling averages (8 features)
+Occupancy features: hotel capacity, occupancy_rate (2 features)
+Analytics
 
-##  Architecture
+Revenue metrics: ADR (Average Daily Rate), RevPAR (Revenue Per Available Room)
+Occupancy statistics with historical trends
+Pre-computed daily metrics for fast queries (sub-200ms response)
+7 pre-built smart queries: revenue analysis, occupancy stats, booking sources, weekend vs weekday, cancellations, popular rooms
+Demand Forecasting
 
-### Three-Layer System Design
-1. **Process Layer:** Data ingestion, ETL pipeline, feature engineering
-2. **AI Layer:** LangChain agent, demand forecasting, pricing optimization  
-3. **User Decision Layer:** Interactive dashboard with real-time analytics
+Prophet-based time-series model
+30-day occupancy predictions with confidence intervals
+Automated seasonality detection (daily, weekly, yearly patterns)
+Trained on 180 days of historical data
+Dynamic Pricing
 
-## Tech Stack
+Rule-based pricing engine analyzing 6 factors
+Factors: predicted demand, current occupancy, weekend/weekday, season, lead time, market pressure
+Price recommendations ranging from 30% discount to 50% premium
+Detailed explanations for each pricing decision
+ArchitectureSystem LayersData Sources → Ingestion Layer → Validation Layer → Cleaning Layer → Feature Engineering → Database → Analytics Layer → AI Layer → API EndpointsThree-Layer DesignProcess Layer (Data Engineering)
 
-**Backend:**
-- FastAPI (Python 3.10+)
-- PostgreSQL + SQLAlchemy
-- Pandas for data processing
-- Pydantic for validation
+ETL pipeline with validation and cleaning
+Feature engineering generating ML-ready data
+Batch processing with error handling
+Analytics Layer (Business Intelligence)
 
-**AI/ML:**
-- LangChain for conversational AI
-- Prophet for time-series forecasting
-- ChromaDB for vector storage
-- OpenAI API integration
+Pre-computed revenue metrics
+Smart analytical queries
+Daily metrics aggregation
+AI Layer (Intelligence)
 
-**Frontend:** (In Progress)
-- Next.js + TypeScript
-- Tailwind CSS
-- Recharts for visualizations
+Prophet forecasting model
+Dynamic pricing recommendations
+7 pre-built query endpoints
+Tech StackBackend
 
-**Infrastructure:**
-- Docker containerization
-- AWS deployment ready
-- Redis caching
+Python 3.10+, FastAPI, SQLAlchemy, Pydantic
+Pandas (data processing), Prophet (forecasting)
+SQLite (development), PostgreSQL (planned production)
+In Progress
 
-##  Key Features
+Next.js 14, TypeScript, Tailwind CSS
+Recharts (visualizations), shadcn/ui (components)
+Planned
 
-### Implemented
--  Complete database schema (Hotels, Rooms, Bookings, Metrics)
--  RESTful API with FastAPI
--  Data validation with Pydantic
--  Database migrations
--  Auto-generated API documentation
-
-### In Progress
--  Data ingestion pipeline (CSV, API, streaming)
--  ETL workflows with feature engineering
--  LangChain-powered chatbot
--  Demand forecasting module
--  Next.js dashboard
-
-### Planned
-- Dynamic pricing recommendations
-- Competitor analysis integration
-- Real-time monitoring dashboard
-
-## Quick Start
-```bash
-# Clone repository
-git clone https://github.com/karan00190/HotelIQ-Revenue-Management.git
-cd HotelIQ-Revenue-Management/backend
-
-# Setup virtual environment
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Run application
-python -m app.main
-```
-
-Visit: http://localhost:8000/docs for API documentation
-
-##  Business Impact
-
-**Target Metrics:**
-- Process 10,000+ booking records daily
-- Generate 50+ ML features for forecasting
-- Provide real-time occupancy insights
-- Enable natural language data queries
-
-##  Documentation
-
-- API Documentation: Auto-generated at `/docs`
-- Database Schema: See `app/models/hotel.py`
-- Architecture: [Coming soon]
-
-##  Developer
-
-**Karan Katte**  
-
-
-
-
-**Note:** This project demonstrates full-stack development capabilities with 
-focus on revenue management domain, data engineering, and AI integration.
-
+Docker containerization
+AWS deployment (EC2, RDS, S3)
+CI/CD with GitHub Actions
+Redis caching, Alembic migrations
+Database SchemaHotels: Properties with location, capacity, star rating
+Rooms: Individual rooms with type, pricing, occupancy limits
+Bookings: Reservations with guest details, dates, pricing, status
+DailyMetrics: Pre-aggregated KPIs (occupancy, revenue, ADR, RevPAR)Relations: Hotels → Rooms → Bookings, Hotels → DailyMetrics
